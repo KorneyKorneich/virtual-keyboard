@@ -1,0 +1,23 @@
+#keyboard {
+  display: flex;
+  width: 780px;
+  height: auto;
+  flex-wrap: wrap;
+}
+#keyboard .key {
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
+  display: inline-grid;
+  align-content: center;
+}
+#keyboard .Backspace, #keyboard .CapsLock, #keyboard .Enter, #keyboard .Shift {
+  width: 100px;
+}
+#keyboard .space {
+  width: 300px;
+}
+
+/*# sourceMappingURL=style.css.map */
