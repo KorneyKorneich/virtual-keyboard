@@ -12,11 +12,14 @@
         display: inline-grid;
         align-content: center;
     }
-    .Backspace, .CapsLock, .Enter, .Shift {
+    .Backspace, .CapsLock, .Enter, .ShiftLeft, .ShiftRight {
         width: 100px;
     }
     .space{
         width: 300px;
+    }
+    .active{
+        background-color: red;
     }
     
 }

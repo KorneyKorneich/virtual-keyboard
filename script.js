@@ -2,13 +2,13 @@
 /* eslint-disable no-unused-vars */
 const EnKeys = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace',
   'Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del', 'CapsLock', 'a', 's',
-  'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter', 'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
-  ',', '.', '/', 'ArrowUp', 'Shift', 'Lang', 'Control', 'Alt', 'Meta', ' ', 'Meta', 'Alt', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
+  'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter', 'ShiftLeft', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
+  ',', '.', '/', 'ArrowUp', 'ShiftRight', 'Lang', 'Control', 'Alt', 'Meta', ' ', 'Meta', 'Alt', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
 
 const RuKeys = [']', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace',
   'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'ё', 'Del', 'CapsLock', 'ф', 'ы',
-  'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter', 'Shift', 'я', 'ч', 'с', 'м', 'и', 'т',
-  'ь', 'б', 'ю', '/', 'ArrowUp', 'Shift', 'lang', 'Control', 'Alt', 'Meta', ' ', 'Meta', 'Alt', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
+  'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter', 'ShiftLeft', 'я', 'ч', 'с', 'м', 'и', 'т',
+  'ь', 'б', 'ю', '/', 'ArrowUp', 'ShiftRight', 'lang', 'Control', 'Alt', 'Meta', ' ', 'Meta', 'Alt', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
 
 const currentKeyboard = EnKeys;
 // document.onkeydown = function(event){
@@ -17,16 +17,21 @@ const currentKeyboard = EnKeys;
 //     console.log(EnKeys);
 
 const basicMarkup = `<div class="typping_space">
-        <textarea name="textarea" id="" cols="30" rows="10"></textarea>
+        <textarea class="textarea" name="textarea" autofocus cols="30" rows="10"></textarea>
     </div>
     <div id="keyboard">
     </div>`;
 document.write(basicMarkup);
-// }
+
 function addKeyboard() {
   for (let i = 0; i < currentKeyboard.length; i++) {
     const key = document.createElement('div');
     key.classList.add('key');
+    if (currentKeyboard[i] === '\\') {
+      key.dataset.key = 'Backslash';
+    } else {
+      key.dataset.key = currentKeyboard[i];
+    }
     if (currentKeyboard[i] === 'Backspace' || currentKeyboard[i] === 'Tab' || currentKeyboard[i] === 'CapsLock'
     || currentKeyboard[i] === 'Enter' || currentKeyboard[i] === 'Shift' || currentKeyboard[i] === 'Lang'
     || currentKeyboard[i] === 'ArrowUp' || currentKeyboard[i] === 'Control' || currentKeyboard[i] === 'Alt'
@@ -36,9 +41,20 @@ function addKeyboard() {
     }
 
     key.innerText = currentKeyboard[i];
+    if (currentKeyboard[i] === '\\') {
+      key.classList.add('Backslash');
+    }
     if (currentKeyboard[i] === ' ') {
       key.classList.add('space');
       key.innerText = 'Space';
+    }
+    if (currentKeyboard[i] === 'ShiftLeft') {
+      key.classList.add('ShiftLeft');
+      key.innerText = 'Shift';
+    }
+    if (currentKeyboard[i] === 'ShiftRight') {
+      key.classList.add('ShiftRight');
+      key.innerText = 'Shift';
     }
     if (currentKeyboard[i] === 'Meta') {
       key.classList.add('Command');
@@ -62,3 +78,52 @@ function addKeyboard() {
 }
 
 addKeyboard();
+
+const textarea = document.querySelector('.textarea');
+
+document.addEventListener('keydown', (event) => {
+  textarea.focus();
+  // const text = textarea.innerText;
+
+  // eslint-disable-next-line max-len
+  // if (event.key === 'Shift' || event.key === 'Meta' || event.key === 'Alt' || event.key === 'Control') {
+  //   textarea.innerHTML += '';
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    const tab = '   ';
+    textarea.value += tab;
+  }
+  if (event.key === 'Shift') {
+    const pressedKey = document.querySelector(`.key[data-key="${event.code}"]`);
+    pressedKey.classList.add('active');
+  } else if (event.code === 'Backslash') {
+    const pressedKey = document.querySelector(`.key[data-key="${event.code}"]`);
+    console.log(pressedKey);
+    console.log(event.code);
+    console.log(event);
+    pressedKey.classList.add('active');
+  } else {
+    const pressedKey = document.querySelector(`.key[data-key="${event.key}"]`);
+    pressedKey.classList.add('active');
+  }
+
+  //  else if (event.key === 'Backspace') {
+
+  // }
+  //  else {
+  //   textarea.innerHTML += event.key;
+  // }
+});
+
+document.addEventListener('keyup', (event) => {
+  if (event.key === 'Shift') {
+    const pressedKey = document.querySelector(`.key[data-key="${event.code}"]`);
+    pressedKey.classList.remove('active');
+  } else if (event.code === 'Backslash') {
+    const pressedKey = document.querySelector(`.key[data-key="${event.code}"]`);
+    pressedKey.classList.remove('active');
+  } else {
+    const pressedKey = document.querySelector(`.key[data-key="${event.key}"]`);
+    pressedKey.classList.remove('active');
+  }
+});

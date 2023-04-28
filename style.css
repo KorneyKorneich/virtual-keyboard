@@ -13,11 +13,14 @@
   display: inline-grid;
   align-content: center;
 }
-#keyboard .Backspace, #keyboard .CapsLock, #keyboard .Enter, #keyboard .Shift {
+#keyboard .Backspace, #keyboard .CapsLock, #keyboard .Enter, #keyboard .ShiftLeft, #keyboard .ShiftRight {
   width: 100px;
 }
 #keyboard .space {
   width: 300px;
+}
+#keyboard .active {
+  background-color: red;
 }
 
 /*# sourceMappingURL=style.css.map */
