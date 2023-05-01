@@ -22,5 +22,8 @@
 #keyboard .active {
   background-color: red;
 }
+#keyboard :active {
+  background-color: red;
+}
 
 /*# sourceMappingURL=style.css.map */
