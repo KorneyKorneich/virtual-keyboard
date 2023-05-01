@@ -102,14 +102,6 @@ function getCaretPosition(ctrl) {
     end: 0,
   };
 }
-
-function setCaretPosition(ctrl, start, end) {
-  if (ctrl.setSelectionRange) {
-    ctrl.focus();
-    ctrl.setSelectionRange(start, end);
-  }
-}
-
 const textarea = document.querySelector('.textarea');
 
 function deleteCharacterBefore() {
@@ -121,6 +113,17 @@ function deleteCharacterBefore() {
   }
   textarea.value = value.slice(0, selectionStart - 1) + value.slice(selectionStart);
   textarea.setSelectionRange(selectionStart - 1, selectionStart - 1);
+}
+
+function deleteCharacterAfter() {
+  let { selectionStart } = textarea;
+  const { value } = textarea;
+  console.log(selectionStart);
+  if (selectionStart === 0) {
+    selectionStart = value.length;
+  }
+  textarea.value = value.slice(0, selectionStart) + value.slice(selectionStart + 1);
+  textarea.setSelectionRange(selectionStart, selectionStart);
 }
 
 document.addEventListener('keydown', (event) => {
@@ -144,6 +147,9 @@ document.addEventListener('keydown', (event) => {
   } else if (event.key === 'Backspace') {
     event.preventDefault();
     deleteCharacterBefore();
+    console.log('delete?');
+  } else if (event.key === 'Del') {
+    deleteCharacterAfter();
     console.log('delete?');
   } else {
     const pressedKey = document.querySelector(`.key[data-key="${event.key}"]`);
@@ -188,11 +194,10 @@ keyboard.addEventListener('click', (event) => {
     textarea.value += '&#8592;';
   } else if (clickedKey === 'Del') {
     console.log('click');
-    // deleteBeforeCaret();
+    deleteCharacterAfter();
   } else if (clickedKey === 'Backspace') {
     deleteCharacterBefore();
   } else {
     textarea.value += clickedKey;
   }
-  // console.log(event)
 });
