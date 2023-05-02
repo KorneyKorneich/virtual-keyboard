@@ -6,9 +6,15 @@ const EnKeys = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
 const RuKeys = [']', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace',
   'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', 'ё', 'Del', 'CapsLock', 'ф', 'ы',
   'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter', 'ShiftLeft', 'я', 'ч', 'с', 'м', 'и', 'т',
-  'ь', 'б', 'ю', '/', 'ArrowUp', 'ShiftRight', 'lang', 'Control', 'Alt', 'Meta', ' ', 'Meta', 'Alt', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
-
-const currentKeyboard = EnKeys;
+  'ь', 'б', 'ю', '/', 'ArrowUp', 'ShiftRight', 'Lang', 'Control', 'Alt', 'Meta', ' ', 'Meta', 'Alt', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
+let lang = localStorage.getItem('keyboardLayout') || 'en';
+console.log(lang);
+let currentKeyboard = '';
+if (lang === 'en') currentKeyboard = EnKeys;
+else currentKeyboard = RuKeys;
+// const currentKeyboard = EnKeys;
+console.log(currentKeyboard);
+// const currentKeyboard = EnKeys;
 // document.onkeydown = function(event){
 //     console.log(event.key);
 //     EnKeys.push(event.key);
@@ -23,15 +29,20 @@ document.write(basicMarkup);
 
 const keyboard = document.querySelector('#keyboard');
 
-function addKeyboard() {
+function saveKeyboardLayout(layout) {
+  localStorage.setItem('keyboardLayout', layout);
+}
+
+function addKeyboard(current) {
+  keyboard.innerHTML = '';
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < currentKeyboard.length; i++) {
+  for (let i = 0; i < current.length; i++) {
     const key = document.createElement('div');
     key.classList.add('key');
-    if (currentKeyboard[i] === '\\') {
+    if (current[i] === '\\') {
       key.dataset.key = 'Backslash';
     } else {
-      key.dataset.key = currentKeyboard[i];
+      key.dataset.key = current[i];
     }
 
     const metaKeys = [
@@ -39,12 +50,12 @@ function addKeyboard() {
       'MetaLeft', 'ArrowLeft', 'ArrowDown', 'MetaRight', 'AltLeft', 'AltRight',
     ];
 
-    if (metaKeys.includes(currentKeyboard[i])) {
-      key.classList.add(currentKeyboard[i]);
+    if (metaKeys.includes(current[i])) {
+      key.classList.add(current[i]);
     }
-    key.innerText = currentKeyboard[i];
+    key.innerText = current[i];
 
-    switch (currentKeyboard[i]) {
+    switch (current[i]) {
       case '\\':
         key.classList.add('Backslash');
         break;
@@ -56,7 +67,7 @@ function addKeyboard() {
 
       case 'ShiftLeft':
       case 'ShiftRight':
-        key.classList.add(currentKeyboard[i]);
+        key.classList.add(current[i]);
         key.innerText = 'Shift';
         break;
 
@@ -76,11 +87,6 @@ function addKeyboard() {
         key.innerText = 'Right';
         break;
 
-      // eslint-disable-next-line no-duplicate-case
-      case 'ArrowUp':
-        key.innerText = 'Up';
-        break;
-
       case 'MetaLeft':
       case 'MetaRight':
         key.innerText = 'Cmd';
@@ -98,7 +104,19 @@ function addKeyboard() {
   }
 }
 
-addKeyboard();
+addKeyboard(currentKeyboard);
+
+function toggleKeyboardLayout() {
+  console.log('click');
+  console.log(currentKeyboard);
+  const newLayout = lang === 'en' ? 'ru' : 'en';
+  lang = newLayout;
+  saveKeyboardLayout(newLayout);
+  console.log(newLayout);
+  if (newLayout === 'en') addKeyboard(EnKeys);
+  else addKeyboard(RuKeys);
+}
+
 const textarea = document.querySelector('.textarea');
 
 function deleteCharacterBefore() {
@@ -299,6 +317,8 @@ keyboard.addEventListener('click', (event) => {
     deleteCharacterAfter();
   } else if (clickedKey === 'Backspace') {
     deleteCharacterBefore();
+  } else if (clickedKey === 'Lang') {
+    toggleKeyboardLayout();
   } else if (clickedKey === 'Backslash' || clickedKey === 'MetaLeft' || clickedKey === 'MetaRight'
   || clickedKey === 'AltRight' || clickedKey === 'AltLeft') {
     textarea.value += '';
