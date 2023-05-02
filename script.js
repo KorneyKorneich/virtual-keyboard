@@ -90,18 +90,6 @@ function addKeyboard() {
 }
 
 addKeyboard();
-function getCaretPosition(ctrl) {
-  if (ctrl.selectionStart || ctrl.selectionStart === '0') {
-    return {
-      start: ctrl.selectionStart,
-      end: ctrl.selectionEnd,
-    };
-  }
-  return {
-    start: 0,
-    end: 0,
-  };
-}
 const textarea = document.querySelector('.textarea');
 
 function deleteCharacterBefore() {
@@ -132,6 +120,7 @@ document.addEventListener('keydown', (event) => {
   // eslint-disable-next-line max-len
   // if (event.key === 'Shift' || event.key === 'Meta' || event.key === 'Alt' || event.key === 'Control') {
   //   textarea.value += '';
+  if (event.key !== event.key.data-key = )
   if (event.key === 'Tab') {
     event.preventDefault();
     const tab = '   ';
@@ -192,10 +181,10 @@ keyboard.addEventListener('click', (event) => {
     textarea.value += '\\';
   } else if (clickedKey === '') {
     textarea.value += '&#8592;';
-  } else if (clickedKey === 'Del') {
+  } else if (clickedKey === 'Backspace') {
     console.log('click');
     deleteCharacterAfter();
-  } else if (clickedKey === 'Backspace') {
+  } else if (clickedKey === 'Del') {
     deleteCharacterBefore();
   } else {
     textarea.value += clickedKey;
