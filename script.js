@@ -1,8 +1,3 @@
-/* eslint-disable no-plusplus */
-
-// import { start } from "repl";
-
-/* eslint-disable no-unused-vars */
 const EnKeys = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace',
   'Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del', 'CapsLock', 'a', 's',
   'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', "'", 'Enter', 'ShiftLeft', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
@@ -28,9 +23,9 @@ document.write(basicMarkup);
 
 const keyboard = document.querySelector('#keyboard');
 
-// Добавьте обработчик события blur на textarea.
 
 function addKeyboard() {
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < currentKeyboard.length; i++) {
     const key = document.createElement('div');
     key.classList.add('key');
@@ -95,7 +90,6 @@ const textarea = document.querySelector('.textarea');
 function deleteCharacterBefore() {
   let { selectionStart } = textarea;
   const { value } = textarea;
-  console.log(selectionStart);
   if (selectionStart === 0) {
     selectionStart = value.length;
   }
@@ -106,7 +100,6 @@ function deleteCharacterBefore() {
 function deleteCharacterAfter() {
   let { selectionStart } = textarea;
   const { value } = textarea;
-  console.log(selectionStart);
   if (selectionStart === 0) {
     selectionStart = value.length;
   }
@@ -115,18 +108,19 @@ function deleteCharacterAfter() {
 }
 
 document.addEventListener('keydown', (event) => {
-  // const text = textarea.innerText;
-
-  // eslint-disable-next-line max-len
-  // if (event.key === 'Shift' || event.key === 'Meta' || event.key === 'Alt' || event.key === 'Control') {
-  //   textarea.value += '';
-  if (event.key !== event.key.data-key = )
   if (event.key === 'Tab') {
     event.preventDefault();
     const tab = '   ';
     textarea.value += tab;
-  }
-  if (event.key === 'Shift') {
+  } else if (event.key === 'Control') {
+    const pressedKey = document.querySelector(`.key[data-key="${event.code}"]`);
+    pressedKey.classList.add('active');
+    textarea.value += '';
+  } else if (event.key === 'Enter') {
+    const pressedKey = document.querySelector(`.key[data-key="${event.key}"]`);
+    pressedKey.classList.add('active');
+    textarea.value += '\n ';
+  } else if (event.key === 'Shift') {
     const pressedKey = document.querySelector(`.key[data-key="${event.code}"]`);
     pressedKey.classList.add('active');
   } else if (event.code === 'Backslash' || event.code === 'MetaLeft' || event.code === 'MetaRight'
@@ -136,14 +130,20 @@ document.addEventListener('keydown', (event) => {
   } else if (event.key === 'Backspace') {
     event.preventDefault();
     deleteCharacterBefore();
-    console.log('delete?');
   } else if (event.key === 'Del') {
     deleteCharacterAfter();
-    console.log('delete?');
   } else {
     const pressedKey = document.querySelector(`.key[data-key="${event.key}"]`);
-    pressedKey.classList.add('active');
-    textarea.value += event.key;
+    if (!pressedKey) {
+      event.preventDefault();
+      console.log(event.key);
+      console.log('russian');
+      alert('раскладка!');
+      textarea.value += '';
+    } else {
+      pressedKey.classList.add('active');
+      textarea.value += event.key;
+    }
   }
 });
 
@@ -157,7 +157,14 @@ document.addEventListener('keyup', (event) => {
     pressedKey.classList.remove('active');
   } else {
     const pressedKey = document.querySelector(`.key[data-key="${event.key}"]`);
-    pressedKey.classList.remove('active');
+    if (!pressedKey) {
+      event.preventDefault();
+      console.log(event.key);
+      console.log('russian');
+      alert('раскладка!');
+    } else {
+      pressedKey.classList.remove('active');
+    }
   }
 });
 
@@ -181,10 +188,9 @@ keyboard.addEventListener('click', (event) => {
     textarea.value += '\\';
   } else if (clickedKey === '') {
     textarea.value += '&#8592;';
-  } else if (clickedKey === 'Backspace') {
-    console.log('click');
-    deleteCharacterAfter();
   } else if (clickedKey === 'Del') {
+    deleteCharacterAfter();
+  } else if (clickedKey === 'Backspace') {
     deleteCharacterBefore();
   } else {
     textarea.value += clickedKey;
