@@ -1,0 +1,28 @@
+#keyboard{
+    display: flex;
+    width: 780px;
+    height: auto;
+    flex-wrap: wrap;
+    .key {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        border-radius: 10px;
+        text-align: center;
+        display: inline-grid;
+        align-content: center;
+    }
+    .Backspace, .CapsLock, .Enter, .ShiftLeft, .ShiftRight {
+        width: 100px;
+    }
+    .space{
+        width: 300px;
+    }
+    .active{
+        background-color: red;
+    }
+    :active{
+        background-color: red;
+    }
+    
+}
